@@ -173,7 +173,7 @@ const server = http.createServer(app);
 // ✅ CORS Setup — allow frontend origin
 const allowedOrigins = [
   "https://pg-finder-frontend-zeta.vercel.app",
-  "http://localhost:3000"
+  "http://localhost:5173"
 ];
 
 app.use(cors({
