@@ -1,4 +1,5 @@
 const City = require('../models/cityModel');
+const mongoose = require("mongoose");
 
 
 // Add City
@@ -29,29 +30,27 @@ const getCities = async (req, res) => {
 
 // Get Cities by State ID
 const getCityByStateId = async (req, res) => {
-  const stateId = req.params.stateId;
-  try {
+    const stateId = req.params.stateId;
+
     if (!mongoose.Types.ObjectId.isValid(stateId)) {
-      return res.status(400).json({ message: "Invalid state ID" });
+        return res.status(400).json({ message: "Invalid state ID format" });
     }
 
-    const cities = await City.find({ stateId: new mongoose.Types.ObjectId(stateId) });
-
-    if (cities.length === 0) {
-      return res.status(200).json({ message: "No cities found", data: [] });
+    try {
+        const cities = await City.find({ stateId });
+        res.status(200).json({
+            message: "Cities found",
+            data: cities,
+        });
+    } catch (err) {
+        console.error("Error fetching cities by state ID:", err);
+        res.status(500).json({
+            message: "Server error",
+            error: err.message,
+        });
     }
-
-    res.status(200).json({
-      message: "city found",
-      data: cities,
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: "Error fetching cities",
-      error: err.message,
-    });
-  }
 };
+
 
 module.exports = {
   addCity,
