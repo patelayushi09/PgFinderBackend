@@ -31,32 +31,18 @@ const getCities = async (req, res) => {
 const getCityByStateId = async (req, res) => {
     const stateId = req.params.stateId;
     try {
-     
-        console.log(`Fetching cities for stateId: ${stateId}`);
-
-     
-        const cities = await City.find({ stateId: stateId });
-
-   
-        if (cities.length > 0) {
-            res.status(200).json({
-                message: "Cities found",
-                data: cities,
-            });
-        } else {
-            
-            res.status(404).json({
-                message: "No cities found for this state",
-            });
-        }
+        const cities = await City.find({ stateId: req.params.stateId })
+        res.status(200).json({
+            message:"city found",
+            data:cities,
+        })
     } catch (err) {
-       
-        res.status(500).json({
-            message: "An error occurred while fetching cities",
-            error: err,
-        });
+        res.status(200).json({
+            message:"city not found"
+        })
     }
-};
+}
+
 module.exports = {
     addCity,
     getCities,
